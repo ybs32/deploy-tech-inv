@@ -2,6 +2,10 @@
 
 # Eternal bash history.
 # ---------------------
+# Comment out HISTSIZE and HISTFILESIZE of user's .bashrc.
+if grep -q ^HISTSIZE ~/.bashrc; then sed -i 's/HISTSIZE=.*/#&/g' ~/.bashrc; fi
+if grep -q ^HISTFILESIZE ~/.bashrc; then sed -i 's/HISTFILESIZE=.*/#&/g' ~/.bashrc; fi
+
 # Undocumented feature which sets the size to "unlimited".
 # http://stackoverflow.com/questions/9457233/unlimited-bash-history
 export HISTFILESIZE=-1
