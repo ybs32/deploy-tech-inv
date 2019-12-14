@@ -1,0 +1,10 @@
+[Unit]
+Description=First deploy
+
+[Service]
+Type=oneshot
+ExecStart=/var/lib/ybs32/bin/deploy
+SyslogIdentifier=deploy
+
+[Install]
+WantedBy=multi-user.target
