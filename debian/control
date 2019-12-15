@@ -1,0 +1,13 @@
+Source: deploy-tech-inv
+Section: XXXXX
+Priority: optional
+Maintainer: ybs32 <XXXXX@XXXXX>
+Build-Depends: debhelper (>= 10)
+Standards-Version: 0.0.1
+Homepage: XXXXX
+
+
+Package: deploy-tech-inv
+Architecture: any
+Depends: jq, unzip, openssl, openssh-server, xserver-xorg, x11-xserver-utils, xinit, fluxbox, pulseaudio
+Description: Experimental
