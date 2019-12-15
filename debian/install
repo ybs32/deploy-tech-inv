@@ -1,3 +1,3 @@
-/var/lib/ybs32/bin
-/lib/systemd/system
+var/lib/ybs32/bin
+lib/systemd/system
 etc
