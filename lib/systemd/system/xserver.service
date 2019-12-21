@@ -1,0 +1,6 @@
+[Unit]
+Description=Display service
+
+[Service]
+Environment="HOME=/home/chrome"
+ExecStart=/usr/bin/startx
