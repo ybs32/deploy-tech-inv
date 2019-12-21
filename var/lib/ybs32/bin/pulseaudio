@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Check arg count
+if [ $# -ne 1]; then
+    exit 0
+fi
+
+# Check arg
+if [ $1 = "start" ]; then
+    su - chrome -c "/usr/bin/pulseaudio"
+elif [ $1 = "kill" ]; then
+    su - chrome -c "/usr/bin/pulseaudio --kill"
+fi

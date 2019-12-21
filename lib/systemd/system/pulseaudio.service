@@ -1,0 +1,10 @@
+[Unit]
+Description=Sound service
+
+[Service]
+ExecStart=/var/lib/ybs32/bin/pulseaudio start
+ExecStop=/var/lib/ybs32/bin/pulseaudio kill
+SyslogIdentifier=pulseaudio
+
+[Install]
+WantedBy=multi-user.target
