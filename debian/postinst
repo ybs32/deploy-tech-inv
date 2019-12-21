@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# Create chrome user
+if ! id -u chrome &>/dev/null; then
+    useradd -m chrome -G audio
+fi
+
+USER="chrome"
+CHROME_HOME="/home/chrome"
+
+# Configure xserver
+echo "xhost local:chrome" > ${CHROME_HOME}/.xinitrc
+echo "su chrome -p -c 'cd ${CHROME_HOME}; USER=${USER} HOME=${CHROME_HOME} startfluxbox'" >> /home/chrome/.xinitrc
+
+# Configure fluxbox
+mkdir -p ${CHROME_HOME}/.fluxbox
+chown -R chrome:chrome ${CHROME_HOME}/.fluxbox
+
+#
+chmod 755 /var/lib/ybs32/bin/*
