@@ -15,7 +15,20 @@ apt update
 disp "START APT UPGRADE"
 apt upgrade -y
 
-disp "START DOCKER INSTALL"
-apt install -y docker.io
+disp "START DOCKER PREPARATION"
+curl -s https://download.docker.com/linux/ubuntu/gpg | apt-key add -
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 
-# TODO: k8s, helm
+disp "START DOCKER INSTALLATION"
+apt update
+apt install -y docker-ce="$(apt-cache madison docker-ce | grep '18.06.3' | awk -NF '|' '{print $2}' | sed 's/ //g')"
+
+disp "START KUBERNETES PREPARATION"
+curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+
+disp "START KUBERNETES INSTALLATION"
+apt update
+apt install -y kubelet="$(apt-cache madison kubelet | grep "1.15.7-00" | awk -NF '|' '{print $2}' | sed 's/ //g')"
+apt install -y kubeadm="$(apt-cache madison kubeadm | grep "1.15.7-00" | awk -NF '|' '{print $2}' | sed 's/ //g')"
+apt install -y kubectl="$(apt-cache madison kubectl | grep "1.15.7-00" | awk -NF '|' '{print $2}' | sed 's/ //g')"

@@ -9,5 +9,5 @@ Homepage: XXXXX
 
 Package: deploy-tech-inv
 Architecture: any
-Depends: jq, unzip, openssl, openssh-server, xserver-xorg, x11-xserver-utils, xinit, fluxbox, pulseaudio
+Depends: jq, unzip, openssl, openssh-server, apt-transport-https, xserver-xorg, x11-xserver-utils, xinit, fluxbox, pulseaudio
 Description: Experimental
