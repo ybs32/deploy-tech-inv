@@ -38,9 +38,9 @@ echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.l
 disp "START KUBERNETES INSTALLATION"
 apt update
 apt install -y kubelet="$(apt-cache madison kubelet | grep "1.15.7-00" | awk -NF '|' '{print $2}' | sed 's/ //g')"
-apt install -y kubeadm="$(apt-cache madison kubeadm | grep "1.15.7-00" | awk -NF '|' '{print $2}' | sed 's/ //g')"
 apt install -y kubectl="$(apt-cache madison kubectl | grep "1.15.7-00" | awk -NF '|' '{print $2}' | sed 's/ //g')"
-apt-mark hold kubelet kubeadm kubectl
+apt install -y kubeadm="$(apt-cache madison kubeadm | grep "1.15.7-00" | awk -NF '|' '{print $2}' | sed 's/ //g')"
+apt-mark hold kubelet kubectl kubeadm
 
 disp "START KUBERNETES CONFIGURATION"
 kubeadm init --pod-network-cidr=10.244.0.0/16
