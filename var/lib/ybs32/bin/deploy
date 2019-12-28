@@ -27,8 +27,8 @@ apt-mark hold docker-ce
 disp "START KUBERNETES USER CREATION"
 KUBE_USER="kube"
 KUBE_HOME="/home/${KUBE_USER}"
-useradd -m ${KUBE_USER}
-usermod -aG sudo ${CHROME_USER}
+useradd -m -s /bin/bash ${KUBE_USER}
+usermod -aG sudo ${KUBE_USER}
 
 disp "START KUBERNETES PREPARATION"
 swapoff -a

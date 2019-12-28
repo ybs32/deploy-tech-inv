@@ -5,7 +5,7 @@ CHROME_HOME="/home/chrome"
 
 # Create chrome user
 if ! id -u chrome &>/dev/null; then
-    useradd -m ${CHROME_USER}
+    useradd -m -s /bin/bash ${CHROME_USER}
     usermod -aG audio ${CHROME_USER}
 fi
 
