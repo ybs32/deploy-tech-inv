@@ -22,8 +22,16 @@ add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(
 disp "START DOCKER INSTALLATION"
 apt update
 apt install -y docker-ce="$(apt-cache madison docker-ce | grep '18.06.3' | awk -NF '|' '{print $2}' | sed 's/ //g')"
+apt-mark hold docker-ce
+
+disp "START KUBERNETES USER CREATION"
+KUBE_USER="kube"
+KUBE_HOME="/home/${KUBE_USER}"
+useradd -m ${KUBE_USER}
+usermod -aG sudo ${CHROME_USER}
 
 disp "START KUBERNETES PREPARATION"
+swapoff -a
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
 
@@ -32,3 +40,10 @@ apt update
 apt install -y kubelet="$(apt-cache madison kubelet | grep "1.15.7-00" | awk -NF '|' '{print $2}' | sed 's/ //g')"
 apt install -y kubeadm="$(apt-cache madison kubeadm | grep "1.15.7-00" | awk -NF '|' '{print $2}' | sed 's/ //g')"
 apt install -y kubectl="$(apt-cache madison kubectl | grep "1.15.7-00" | awk -NF '|' '{print $2}' | sed 's/ //g')"
+apt-mark hold kubelet kubeadm kubectl
+
+disp "START KUBERNETES CONFIGURATION"
+kubeadm init --pod-network-cidr=10.244.0.0/16
+su - ${KUBE_USER} -c "mkdir -p ${KUBE_HOME}/.kube"
+cp -i /etc/kubernetes/admin.conf ${KUBE_HOME}/.kube/config
+chown ${KUBE_USER}:${KUBE_USER} ${KUBE_HOME}/.kube/config
