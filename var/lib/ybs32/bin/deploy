@@ -9,12 +9,15 @@ disp() {
     echo "${DIVIDER}"
 }
 
+
 disp "START APT UPDATE"
 apt update
 
 disp "START APT UPGRADE"
 apt upgrade -y
 
+
+##### Docker Installation
 disp "START DOCKER PREPARATION"
 curl -s https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
@@ -24,6 +27,8 @@ apt update
 apt install -y docker-ce="$(apt-cache madison docker-ce | grep '18.06.3' | awk -NF '|' '{print $2}' | sed 's/ //g')"
 apt-mark hold docker-ce
 
+
+##### Kubernetes Installation
 disp "START KUBERNETES USER CREATION"
 KUBE_USER="kube"
 KUBE_HOME="/home/${KUBE_USER}"
