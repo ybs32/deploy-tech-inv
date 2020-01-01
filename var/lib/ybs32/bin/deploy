@@ -53,3 +53,12 @@ su - ${KUBE_USER} -c "mkdir -p ${KUBE_HOME}/.kube"
 cp -f /etc/kubernetes/admin.conf ${KUBE_HOME}/.kube/config
 chown ${KUBE_USER}:${KUBE_USER} ${KUBE_HOME}/.kube/config
 kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+
+
+##### Helm Installation
+disp "START HELM INSTALLATION"
+curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
+chmod 700 get_helm.sh
+./get_helm.sh
+rm ./get_helm.sh
+helm repo add stable https://kubernetes-charts.storage.googleapis.com/
