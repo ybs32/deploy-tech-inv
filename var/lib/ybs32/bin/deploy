@@ -50,5 +50,6 @@ apt-mark hold kubelet kubectl kubeadm
 disp "START KUBERNETES CONFIGURATION"
 kubeadm init --pod-network-cidr=10.244.0.0/16
 su - ${KUBE_USER} -c "mkdir -p ${KUBE_HOME}/.kube"
-cp -i /etc/kubernetes/admin.conf ${KUBE_HOME}/.kube/config
+cp -f /etc/kubernetes/admin.conf ${KUBE_HOME}/.kube/config
 chown ${KUBE_USER}:${KUBE_USER} ${KUBE_HOME}/.kube/config
+kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
