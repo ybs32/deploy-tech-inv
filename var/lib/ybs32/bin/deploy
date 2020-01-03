@@ -36,7 +36,7 @@ useradd -m -s /bin/bash ${KUBE_USER}
 usermod -aG sudo ${KUBE_USER}
 
 disp "START KUBERNETES PREPARATION"
-swapoff -a
+swapoff -a && sed -i '/swap/s/^/#/' /etc/fstab
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
 echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
 
@@ -47,12 +47,13 @@ apt install -y kubectl="$(apt-cache madison kubectl | grep "1.15.7-00" | awk -NF
 apt install -y kubeadm="$(apt-cache madison kubeadm | grep "1.15.7-00" | awk -NF '|' '{print $2}' | sed 's/ //g')"
 apt-mark hold kubelet kubectl kubeadm
 
-disp "START KUBERNETES CONFIGURATION"
+disp "START KUBERNETES CLUSTER BUILDING"
 kubeadm init --pod-network-cidr=10.244.0.0/16
 su - ${KUBE_USER} -c "mkdir -p ${KUBE_HOME}/.kube"
 cp -f /etc/kubernetes/admin.conf ${KUBE_HOME}/.kube/config
 chown ${KUBE_USER}:${KUBE_USER} ${KUBE_HOME}/.kube/config
-kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml"
+su - ${KUBE_USER} -c "kubectl taint nodes $(su - kube -c 'kubectl get nodes -o name') node-role.kubernetes.io/master:NoSchedule-"
 
 
 ##### Helm Installation
@@ -61,4 +62,11 @@ curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get
 chmod 700 get_helm.sh
 ./get_helm.sh
 rm ./get_helm.sh
-helm repo add stable https://kubernetes-charts.storage.googleapis.com/
+
+disp "START HELM CONFIGURATION"
+su - ${KUBE_USER} -c "helm repo add stable https://kubernetes-charts.storage.googleapis.com/"
+su - ${KUBE_USER} -c "helm repo update"
+
+
+disp "DEPLOY COMPLETED"
+systemctl disable deploy
