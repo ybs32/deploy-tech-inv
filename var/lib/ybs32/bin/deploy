@@ -52,15 +52,20 @@ kubeadm init --pod-network-cidr=10.244.0.0/16
 su - ${KUBE_USER} -c "mkdir -p ${KUBE_HOME}/.kube"
 cp -f /etc/kubernetes/admin.conf ${KUBE_HOME}/.kube/config
 chown ${KUBE_USER}:${KUBE_USER} ${KUBE_HOME}/.kube/config
-su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml"
+su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.11.0/Documentation/kube-flannel.yml"
+
+disp "START KUBERNETES CLUSTER CONFIGURATION"
 su - ${KUBE_USER} -c "kubectl taint nodes $(su - kube -c 'kubectl get nodes -o name') node-role.kubernetes.io/master:NoSchedule-"
+su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0-beta8/aio/deploy/recommended.yaml"
+su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.24.1/deploy/mandatory.yaml"
+su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.24.1/deploy/provider/cloud-generic.yaml"
 
 
 ##### Helm Installation
 disp "START HELM INSTALLATION"
 curl https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 > get_helm.sh
 chmod 700 get_helm.sh
-./get_helm.sh
+bash ./get_helm.sh
 rm ./get_helm.sh
 
 disp "START HELM CONFIGURATION"
