@@ -27,6 +27,9 @@ spec:
             {{- toYaml .Values.securityContext | nindent 12 }}
           image: "{{ .Values.image.repository }}:{{ .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+          - name: "DISPLAY"
+            value: ":0"
           volumeMounts:
           - mountPath: /tmp/.X11-unix
             name: x11-domain-socket
