@@ -56,10 +56,12 @@ su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/coreos/
 
 disp "START KUBERNETES CLUSTER CONFIGURATION"
 su - ${KUBE_USER} -c "kubectl taint nodes $(su - kube -c 'kubectl get nodes -o name') node-role.kubernetes.io/master:NoSchedule-"
-su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/ybs32/deploy-tech-inv/master/res/dashboard/kubernetes-dashboard-nodeport-cert-v2.0.0-beta8.yaml"
-su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/ybs32/deploy-tech-inv/master/res/dashboard/kubernetes-dashboard-service-account.yaml"
+su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.1/manifests/metallb.yaml"
+su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/ybs32/deploy-tech-inv/master/res/kubernetes/metallb/metallb-config.yaml"
 su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.24.1/deploy/mandatory.yaml"
 su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.24.1/deploy/provider/cloud-generic.yaml"
+su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/ybs32/deploy-tech-inv/master/res/kubernetes/dashboard/dashboard-nodeport-cert-v2.0.0-beta8.yaml"
+su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/ybs32/deploy-tech-inv/master/res/kubernetes/dashboard/dashboard-service-account.yaml"
 
 
 ##### Helm Installation
