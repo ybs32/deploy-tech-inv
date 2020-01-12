@@ -16,6 +16,9 @@ apt update
 disp "START APT UPGRADE"
 apt upgrade -y
 
+disp "START SERVICES"
+systemctl start xserver
+
 
 ##### Docker Installation
 disp "START DOCKER PREPARATION"
@@ -47,15 +50,17 @@ apt install -y kubectl="$(apt-cache madison kubectl | grep "1.15.7-00" | awk -NF
 apt install -y kubeadm="$(apt-cache madison kubeadm | grep "1.15.7-00" | awk -NF '|' '{print $2}' | sed 's/ //g')"
 apt-mark hold kubelet kubectl kubeadm
 
-disp "START KUBERNETES CLUSTER BUILDING"
+disp "START KUBERNETES NETWORK BUILDING"
 kubeadm init --pod-network-cidr=10.244.0.0/16
 su - ${KUBE_USER} -c "mkdir -p ${KUBE_HOME}/.kube"
 cp -f /etc/kubernetes/admin.conf ${KUBE_HOME}/.kube/config
 chown ${KUBE_USER}:${KUBE_USER} ${KUBE_HOME}/.kube/config
 su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.11.0/Documentation/kube-flannel.yml"
 
-disp "START KUBERNETES CLUSTER CONFIGURATION"
+disp "START KUBERNETES CONFIGURATION"
 su - ${KUBE_USER} -c "kubectl taint nodes $(su - kube -c 'kubectl get nodes -o name') node-role.kubernetes.io/master:NoSchedule-"
+
+disp "START KUBERNETES DEPLOY"
 su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/google/metallb/v0.8.1/manifests/metallb.yaml"
 su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/ybs32/deploy-tech-inv/master/res/kubernetes/metallb/metallb-config.yaml"
 su - ${KUBE_USER} -c "kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/nginx-0.24.1/deploy/mandatory.yaml"
@@ -74,6 +79,9 @@ rm ./get_helm.sh
 disp "START HELM CONFIGURATION"
 su - ${KUBE_USER} -c "helm repo add stable https://kubernetes-charts.storage.googleapis.com/"
 su - ${KUBE_USER} -c "helm repo update"
+
+disp "START HELM DEPLOY"
+su - ${KUBE_USER} -c "helm install chrome https://raw.githubusercontent.com/ybs32/deploy-tech-inv/master/res/helm/charts/planet-0.0.2.tgz"
 
 
 disp "DEPLOY COMPLETED"
