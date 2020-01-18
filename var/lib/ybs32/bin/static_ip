@@ -13,15 +13,18 @@ cp /etc/netplan/50-cloud-init.yaml /etc/netplan/50-cloud-init.yaml.bk
 
 # NIC
 nic=`ifconfig | awk 'NR==1{print $1}'`
+
 # IP Address
 ip=`ifconfig | awk 'NR==2{print $2}'`
 subnet=`ifconfig | awk 'NR==2{print $4}'`
 subnet_cidr=`mask2cidr ${subnet}`
 staticip="${ip}/${subnet_cidr}"
+
 # Gateway, DNS
 gateway=`ip route | awk 'NR==1{print$3}'`
 nameserver=`cat /etc/resolv.conf | grep nameserver | awk 'NR==1{print $2}'`
 
+# Exec
 echo
 cat > /etc/netplan/50-cloud-init.yaml <<EOF
 network:
