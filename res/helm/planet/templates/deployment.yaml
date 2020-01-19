@@ -21,6 +21,12 @@ spec:
       - name: x11-domain-socket
         hostPath:
           path: /tmp/.X11-unix
+      - name: pulse-domain-socket
+        hostPath:
+          path: /run/user/1000/pulse/native
+      - name: pulse-cookie
+        hostPath:
+          path: /home/chrome/.config/pulse/cookie
       containers:
         - name: {{ .Chart.Name }}
           securityContext:
@@ -30,9 +36,17 @@ spec:
           env:
           - name: "DISPLAY"
             value: ":0"
+          - name: "PULSE_SERVER"
+            value: "unix:/run/user/1000/pulse/native"
+          - name: "PULSE_COOKIE"
+            value: "/home/chrome/.config/pulse/cookie"
           volumeMounts:
           - mountPath: /tmp/.X11-unix
             name: x11-domain-socket
+          - mountPath: /run/user/1000/pulse/native
+            name: pulse-domain-socket
+          - mountPath: /home/chrome/.config/pulse/cookie
+            name: pulse-cookie
           livenessProbe:
             httpGet:
               path: /

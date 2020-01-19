@@ -18,6 +18,7 @@ apt upgrade -y
 
 disp "START SERVICES"
 systemctl start xserver
+systemctl start pulseaudio
 
 
 ##### Docker Installation
@@ -81,7 +82,7 @@ su - ${KUBE_USER} -c "helm repo add stable https://kubernetes-charts.storage.goo
 su - ${KUBE_USER} -c "helm repo update"
 
 disp "START HELM DEPLOY"
-su - ${KUBE_USER} -c "helm install chrome https://raw.githubusercontent.com/ybs32/deploy-tech-inv/master/res/helm/charts/planet-0.0.2.tgz"
+su - ${KUBE_USER} -c "helm install chrome https://raw.githubusercontent.com/ybs32/deploy-tech-inv/master/res/helm/charts/planet-0.0.1.tgz"
 
 
 disp "DEPLOY COMPLETED"
