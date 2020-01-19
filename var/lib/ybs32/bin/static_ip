@@ -20,9 +20,8 @@ subnet=`ifconfig | awk 'NR==2{print $4}'`
 subnet_cidr=`mask2cidr ${subnet}`
 staticip="${ip}/${subnet_cidr}"
 
-# Gateway, DNS
+# Gateway
 gateway=`ip route | awk 'NR==1{print$3}'`
-nameserver=`cat /etc/resolv.conf | grep nameserver | awk 'NR==1{print $2}'`
 
 # Exec
 echo
@@ -34,7 +33,7 @@ network:
             addresses: [$staticip]
             gateway4: $gateway
             nameservers:
-                addresses: [$nameserver]
+                addresses: [$gateway]
     version: 2
 EOF
 netplan apply

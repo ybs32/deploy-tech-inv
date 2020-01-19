@@ -2,6 +2,7 @@
 
 CHROME_USER="chrome"
 CHROME_HOME="/home/${CHROME_USER}"
+chmod 755 /var/lib/ybs32/bin/*
 
 # Create chrome user
 if ! id -u chrome &>/dev/null; then
@@ -17,7 +18,9 @@ echo "su chrome -p -c 'cd ${CHROME_HOME}; USER=${CHROME_USER} HOME=${CHROME_HOME
 mkdir -p ${CHROME_HOME}/.fluxbox
 chown -R chrome:chrome ${CHROME_HOME}/.fluxbox
 
+# Set static ip address
+/var/lib/ybs32/bin/static_ip
+
 # Enable service
-chmod 755 /var/lib/ybs32/bin/*
 systemctl daemon-reload
 systemctl enable deploy
