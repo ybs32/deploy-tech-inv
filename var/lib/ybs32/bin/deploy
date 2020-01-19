@@ -16,10 +16,6 @@ apt update
 disp "START APT UPGRADE"
 apt upgrade -y
 
-disp "START SERVICES"
-systemctl start xserver
-systemctl start pulseaudio
-
 
 ##### Docker Installation
 disp "START DOCKER PREPARATION"

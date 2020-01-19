@@ -24,3 +24,5 @@ chown -R chrome:chrome ${CHROME_HOME}/.fluxbox
 # Enable service
 systemctl daemon-reload
 systemctl enable deploy
+systemctl enable xserver
+systemctl enable pulseaudio
