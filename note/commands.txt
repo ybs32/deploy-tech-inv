@@ -1,6 +1,6 @@
 sudo passwd root
 apt install -y openssh-server
-sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_conf
+sed -i 's/^#PermitRootLogin prohibit-password/PermitRootLogin yes/g' /etc/ssh/sshd_config
 systemctl restart ssh
 
 debuild -us -uc
