@@ -1,5 +1,5 @@
 [Unit]
-Description=First deploy
+Description=Deploy service
 
 [Service]
 Type=oneshot

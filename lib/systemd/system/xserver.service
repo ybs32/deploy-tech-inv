@@ -4,3 +4,7 @@ Description=Display service
 [Service]
 Environment="HOME=/home/chrome"
 ExecStart=/usr/bin/startx
+SyslogIdentifier=xserver
+
+[Install]
+WantedBy=multi-user.target
