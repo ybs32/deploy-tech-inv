@@ -28,8 +28,10 @@ add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(
 
 disp "START DOCKER INSTALLATION"
 apt update
-apt install -y docker-ce="$(apt-cache madison docker-ce | grep '18.06.3' | awk -NF '|' '{print $2}' | sed 's/ //g')"
+apt install -y docker-ce="$(apt-cache madison docker-ce | grep '19.03.11' | awk -NF '|' '{print $2}' | sed 's/ //g')"
 apt-mark hold docker-ce
+apt-mark hold docker-ce-cli
+apt-mark hold containerd.io
 
 
 ##### Kubernetes Installation
