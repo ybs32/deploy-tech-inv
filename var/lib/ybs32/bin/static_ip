@@ -32,8 +32,6 @@ network:
             dhcp4: false
             addresses: [$staticip]
             gateway4: $gateway
-            nameservers:
-                addresses: [8.8.8.8, 8.8.4.4]
     version: 2
 EOF
 netplan apply
